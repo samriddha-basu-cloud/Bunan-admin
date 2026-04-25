@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>বুনন Admin — Product Management</title>
+  <link rel="icon" type="image/png" href="../client/logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d27;
+      --surface2:  #22263a;
+      --border:    rgba(255,255,255,0.07);
+      --gold:      #C9A84C;
+      --gold-dim:  #a07830;
+      --text:      #e8eaf0;
+      --text-dim:  #8b90a8;
+      --accent:    #4f6ef7;
+      --success:   #22c55e;
+      --danger:    #ef4444;
+      --warning:   #f59e0b;
+      --radius:    8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ═══ AUTH SCREEN */
+    #authScreen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .auth-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 3rem; width: 380px;
+      text-align: center;
+    }
+    .auth-logo {
+      font-family: 'Noto Serif Bengali', serif;
+      font-size: 2.5rem; color: var(--gold);
+      text-shadow: 0 0 20px rgba(201,168,76,0.4);
+      margin-bottom: 0.3rem;
+    }
+    .auth-sub {
+      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 2rem;
+    }
+    .auth-field {
+      margin-bottom: 1rem; text-align: left;
+    }
+    .auth-field label {
+      display: block; font-size: 0.75rem; font-weight: 500;
+      color: var(--text-dim); margin-bottom: 0.4rem;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .auth-field input {
+      width: 100%; padding: 0.7rem 1rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 0.9rem;
+      outline: none; transition: border 0.3s;
+    }
+    .auth-field input:focus { border-color: var(--gold); }
+    .auth-btn {
+      width: 100%; padding: 0.8rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+      color: #1a1208; font-weight: 600;
+      border: none; border-radius: 4px; cursor: pointer;
+      font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .auth-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .auth-error {
+      color: var(--danger); font-size: 0.8rem; margin-top: 0.8rem;
+      display: none;
+    }
+
+    /* ═══ LAYOUT */
+    #adminApp { display: none; }
+    #adminApp.visible { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px; flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      padding: 1.5rem 0;
+      position: sticky; top: 0; height: 100vh;
+    }
+    .sidebar-logo {
+      padding: 0 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar-logo-bn {
+      font-family: 'Noto Serif Bengali', serif;
+      font-size: 1.5rem; color: var(--gold);
+    }
+    .sidebar-logo-tag {
+      font-size: 0.65rem; color: var(--text-dim);
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .sidebar-nav {
+      flex: 1; padding: 1rem 0;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.7rem 1.5rem;
+      color: var(--text-dim); cursor: pointer;
+      font-size: 0.875rem; font-weight: 500;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+    .nav-item.active {
+      color: var(--gold); background: rgba(201,168,76,0.06);
+      border-left-color: var(--gold);
+    }
+    .nav-section {
+      padding: 1.5rem 1.5rem 0.5rem;
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+    .sidebar-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .logout-btn {
+      width: 100%; padding: 0.6rem;
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.2);
+      color: var(--danger); border-radius: 4px;
+      cursor: pointer; font-size: 0.8rem; letter-spacing: 0.08em;
+      text-transform: uppercase; transition: all 0.3s;
+    }
+    .logout-btn:hover { background: rgba(239,68,68,0.2); }
+
+    /* Main area */
+    .main {
+      flex: 1; display: flex; flex-direction: column;
+      min-width: 0;
+    }
+
+    /* Top bar */
+    .topbar {
+      padding: 1rem 2rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .topbar-title {
+      font-size: 1rem; font-weight: 600; color: var(--text);
+    }
+    .topbar-user {
+      font-size: 0.8rem; color: var(--text-dim);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .user-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 6px var(--success);
+    }
+
+    /* Content area */
+    .content {
+      flex: 1; padding: 2rem;
+      overflow-y: auto;
+    }
+
+    /* ═══ PAGE HEADER */
+    .page-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .page-title { font-size: 1.4rem; font-weight: 700; }
+    .page-sub { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.2rem; }
+    .btn-add {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.65rem 1.3rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+      color: #1a1208; font-weight: 600;
+      border: none; border-radius: 4px; cursor: pointer;
+      font-size: 0.8rem; letter-spacing: 0.05em;
+      transition: all 0.3s;
+    }
+    .btn-add:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+    /* ═══ STAT CARDS */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1rem; margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    .stat-card-label {
+      font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 0.5rem;
+    }
+    .stat-card-num {
+      font-size: 2rem; font-weight: 700; color: var(--text);
+    }
+    .stat-card-sub {
+      font-size: 0.75rem; color: var(--text-dim); margin-top: 0.2rem;
+    }
+    .stat-card.gold { border-top: 2px solid var(--gold); }
+    .stat-card.blue { border-top: 2px solid var(--accent); }
+    .stat-card.green { border-top: 2px solid var(--success); }
+    .stat-card.orange { border-top: 2px solid var(--warning); }
+
+    /* ═══ TOOLBAR */
+    .toolbar {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .tb-search {
+      flex: 1; min-width: 200px; max-width: 350px;
+      padding: 0.6rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text);
+      font-family: 'Inter'; font-size: 0.875rem;
+      outline: none; transition: border 0.3s;
+    }
+    .tb-search:focus { border-color: var(--gold); }
+    .tb-filter {
+      padding: 0.6rem 0.9rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text-dim);
+      font-family: 'Inter'; font-size: 0.8rem;
+      outline: none; cursor: pointer;
+      appearance: none; -webkit-appearance: none;
+    }
+    .tb-filter option { background: var(--surface2); }
+    .tb-filter:focus { border-color: var(--accent); }
+
+    /* ═══ TABLE */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    thead th {
+      padding: 0.9rem 1rem;
+      text-align: left;
+      background: var(--surface2);
+      font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-dim); font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.02); }
+    tbody td { padding: 0.85rem 1rem; vertical-align: middle; }
+
+    .td-code {
+      font-family: monospace; font-size: 0.8rem;
+      color: var(--gold); font-weight: 500;
+    }
+    .td-sn {
+      font-family: monospace; font-size: 0.75rem; color: var(--text-dim);
+    }
+    .td-name { font-weight: 500; }
+    .td-name-bn {
+      font-family: 'Noto Serif Bengali', serif;
+      font-size: 0.78rem; color: var(--text-dim);
+    }
+
+    .badge-sm {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px; font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+    .badge-new { background: rgba(79,110,247,0.15); color: var(--accent); }
+    .badge-best { background: rgba(201,168,76,0.15); color: var(--gold); }
+    .badge-no { background: rgba(255,255,255,0.05); color: var(--text-dim); }
+
+    .likes-num {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      color: #ef4444; font-weight: 500;
+    }
+
+    /* Action buttons */
+    .actions { display: flex; gap: 0.4rem; }
+    .btn-icon {
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 4px; cursor: pointer;
+      font-size: 0.85rem; background: transparent;
+      transition: all 0.2s;
+    }
+    .btn-icon.edit { color: var(--accent); }
+    .btn-icon.edit:hover { background: rgba(79,110,247,0.1); border-color: var(--accent); }
+    .btn-icon.delete { color: var(--danger); }
+    .btn-icon.delete:hover { background: rgba(239,68,68,0.1); border-color: var(--danger); }
+    .btn-icon.view { color: var(--gold); }
+    .btn-icon.view:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+
+    /* Thumb */
+    .td-thumb {
+      width: 44px; height: 44px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      overflow: hidden;
+    }
+    .td-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Pagination */
+    .pagination {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem; color: var(--text-dim);
+    }
+    .pg-btns { display: flex; gap: 0.4rem; }
+    .pg-btn {
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); border-radius: 4px;
+      cursor: pointer; background: transparent; color: var(--text-dim);
+      font-size: 0.8rem; transition: all 0.2s;
+    }
+    .pg-btn:hover, .pg-btn.active {
+      background: rgba(201,168,76,0.1); border-color: var(--gold); color: var(--gold);
+    }
+
+    /* ═══ MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: var(--radius);
+      width: 100%; max-width: 720px;
+      max-height: 90vh; overflow-y: auto;
+      scrollbar-width: thin;
+      transform: translateY(16px); transition: transform 0.3s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-title { font-size: 1.1rem; font-weight: 600; }
+    .modal-close {
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); border-radius: 4px;
+      cursor: pointer; background: transparent; color: var(--text-dim);
+      font-size: 1rem; transition: all 0.2s;
+    }
+    .modal-close:hover { color: var(--danger); border-color: var(--danger); }
+    .modal-body { padding: 2rem; }
+    .modal-footer {
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 0.8rem; justify-content: flex-end;
+    }
+
+    /* Form */
+    .form-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .form-group {
+      display: flex; flex-direction: column; gap: 0.4rem;
+    }
+    .form-group.full { grid-column: 1/-1; }
+    .form-label {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .form-label .req { color: var(--danger); }
+    .form-input, .form-select, .form-textarea {
+      padding: 0.65rem 0.9rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text);
+      font-family: 'Inter'; font-size: 0.875rem;
+      outline: none; transition: border 0.3s;
+      width: 100%;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--accent);
+    }
+    .form-select option { background: var(--surface2); }
+    .form-textarea { min-height: 90px; resize: vertical; }
+    .form-hint { font-size: 0.72rem; color: var(--text-dim); }
+
+    .form-section {
+      font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-dim); font-weight: 600;
+      grid-column: 1/-1;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 0.3rem;
+    }
+
+    .form-toggle {
+      display: flex; align-items: center; gap: 0.7rem;
+    }
+    .toggle {
+      position: relative; width: 40px; height: 22px; cursor: pointer;
+    }
+    .toggle input { display: none; }
+    .toggle-track {
+      width: 40px; height: 22px; border-radius: 11px;
+      background: rgba(255,255,255,0.1);
+      transition: background 0.3s;
+    }
+    .toggle input:checked ~ .toggle-track { background: var(--success); }
+    .toggle-thumb {
+      position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #fff; transition: left 0.3s;
+    }
+    .toggle input:checked ~ .toggle-thumb { left: 21px; }
+    .toggle-label {
+      font-size: 0.85rem; color: var(--text);
+    }
+
+    /* Reviews in modal */
+    .reviews-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .review-row {
+      display: flex; gap: 0.5rem;
+    }
+    .review-row input {
+      flex: 2; padding: 0.5rem 0.7rem;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text);
+      font-family: 'Inter'; font-size: 0.8rem; outline: none;
+    }
+    .review-row input:first-child { flex: 3; }
+    .btn-rem-review {
+      padding: 0.4rem 0.6rem; background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.2); border-radius: 4px;
+      color: var(--danger); cursor: pointer; font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+    .btn-rem-review:hover { background: rgba(239,68,68,0.2); }
+    .btn-add-review {
+      padding: 0.45rem 1rem;
+      background: rgba(79,110,247,0.1); border: 1px solid rgba(79,110,247,0.2);
+      border-radius: 4px; color: var(--accent); cursor: pointer;
+      font-size: 0.75rem; font-weight: 500; transition: all 0.2s;
+    }
+    .btn-add-review:hover { background: rgba(79,110,247,0.2); }
+
+    /* Action buttons */
+    .btn-primary-admin {
+      padding: 0.65rem 1.5rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+      color: #1a1208; font-weight: 600; border: none;
+      border-radius: 4px; cursor: pointer; font-size: 0.85rem;
+      transition: all 0.3s;
+    }
+    .btn-primary-admin:hover { filter: brightness(1.1); }
+    .btn-cancel {
+      padding: 0.65rem 1.5rem;
+      background: transparent; color: var(--text-dim);
+      border: 1px solid var(--border); border-radius: 4px;
+      cursor: pointer; font-size: 0.85rem; transition: all 0.3s;
+    }
+    .btn-cancel:hover { border-color: var(--text-dim); color: var(--text); }
+    .btn-danger {
+      padding: 0.65rem 1.5rem;
+      background: rgba(239,68,68,0.1); color: var(--danger);
+      border: 1px solid rgba(239,68,68,0.2); border-radius: 4px;
+      cursor: pointer; font-size: 0.85rem; transition: all 0.3s;
+    }
+    .btn-danger:hover { background: rgba(239,68,68,0.2); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+      padding: 0.9rem 1.5rem;
+      border-radius: 6px; font-size: 0.875rem; font-weight: 500;
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.35s ease;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--success); color: #fff; }
+    .toast.error { background: var(--danger); color: #fff; }
+    .toast.info { background: var(--accent); color: #fff; }
+
+    /* Confirm dialog */
+    .confirm-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--danger);
+      border-radius: var(--radius);
+      padding: 2rem; max-width: 420px; width: 100%;
+      text-align: center;
+    }
+    .confirm-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .confirm-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .confirm-msg { color: var(--text-dim); font-size: 0.875rem; margin-bottom: 1.5rem; }
+    .confirm-btns { display: flex; gap: 0.8rem; justify-content: center; }
+
+    /* Loading */
+    .loading-row td {
+      text-align: center; padding: 3rem;
+      color: var(--text-dim); font-size: 0.9rem;
+    }
+    .spinner {
+      display: inline-block; width: 20px; height: 20px;
+      border: 2px solid rgba(255,255,255,0.1);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════ AUTH SCREEN -->
+<div id="authScreen">
+  <div class="auth-box">
+    <div class="auth-logo">বুনন</div>
+    <div class="auth-sub">Admin Dashboard</div>
+    <div class="auth-field">
+      <label>Email</label>
+      <input type="email" id="authEmail" placeholder="admin@bunan.in" />
+    </div>
+    <div class="auth-field">
+      <label>Password</label>
+      <input type="password" id="authPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+    </div>
+    <button class="auth-btn" onclick="doLogin()">Sign In</button>
+    <div class="auth-error" id="authError">Invalid credentials. Try again.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ ADMIN APP -->
+<div id="adminApp">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-bn">বুনন</div>
+      <div class="sidebar-logo-tag">Admin Panel</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Catalogue</div>
+      <div class="nav-item active" onclick="showSection('products')">📦 Products</div>
+      <div class="nav-item" onclick="showSection('new')">✨ New Arrivals</div>
+      <div class="nav-item" onclick="showSection('bestsellers')">★ Best Sellers</div>
+      <div class="nav-section">Analytics</div>
+      <div class="nav-item" onclick="showSection('analytics')">📊 Overview</div>
+    </nav>
+    <div class="sidebar-footer">
+      <div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:0.8rem;" id="userEmail"></div>
+      <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbarTitle">Product Catalogue</div>
+      <div class="topbar-user">
+        <div class="user-dot"></div>
+        <span id="topbarUser">Admin</span>
+        <span>·</span>
+        <a href="../client/index.html" target="_blank" style="color:var(--gold);font-size:0.75rem;text-decoration:none;">↗ View Site</a>
+      </div>
+    </div>
+
+    <div class="content" id="mainContent">
+      <!-- Filled by JS -->
+    </div>
+  </main>
+</div>
+
+<!-- ══════════════════════════ PRODUCT MODAL (Add / Edit) -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Add New Product</div>
+      <button class="modal-close" onclick="closeProductModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="productForm" onsubmit="return false;">
+        <div class="form-grid">
+          <!-- Basic Info -->
+          <div class="form-section">Basic Information</div>
+          <div class="form-group">
+            <label class="form-label">Product Name (English) <span class="req">*</span></label>
+            <input class="form-input" id="f_name" placeholder="e.g. Jamdani Silk Saree" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Product Name (Bengali)</label>
+            <input class="form-input" id="f_nameBn" placeholder="e.g. জামদানি রেশম শাড়ি" style="font-family:'Noto Serif Bengali',serif;" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sale Code <span class="req">*</span></label>
+            <input class="form-input" id="f_saleCode" placeholder="e.g. SAR-JMD-007" required />
+            <span class="form-hint">Format: CATEGORY-FABRIC-NUMBER</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Drive Photo Link</label>
+            <input class="form-input" id="f_driveLink" placeholder="https://drive.google.com/file/d/..." />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Description <span class="req">*</span></label>
+            <textarea class="form-textarea" id="f_description" placeholder="Tell the story of this piece — its craft, its origin, what makes it special." required></textarea>
+          </div>
+
+          <!-- Classification -->
+          <div class="form-section">Classification</div>
+          <div class="form-group">
+            <label class="form-label">Category <span class="req">*</span></label>
+            <select class="form-select" id="f_category" required>
+              <option value="">Select category</option>
+              <option>Saree</option><option>Punjabi</option><option>Kantha</option>
+              <option>Dupatta</option><option>Kurta</option><option>Shawl</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fabric <span class="req">*</span></label>
+            <select class="form-select" id="f_fabric" required>
+              <option value="">Select fabric</option>
+              <option>Cotton</option><option>Silk</option><option>Muslin</option>
+              <option>Linen</option><option>Khadi</option><option>Zari</option>
+              <option>Georgette</option><option>Organza</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Colour</label>
+            <select class="form-select" id="f_colour">
+              <option value="">Select colour</option>
+              <option>Red</option><option>Blue</option><option>Green</option>
+              <option>White</option><option>Black</option><option>Yellow</option>
+              <option>Orange</option><option>Purple</option><option>Beige</option><option>Multicolour</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Karigari</label>
+            <select class="form-select" id="f_karigari">
+              <option value="">Select karigari</option>
+              <option>Jamdani</option><option>Kantha Stitch</option><option>Block Print</option>
+              <option>Batik</option><option>Embroidery</option><option>Zari Work</option>
+              <option>Nakshi</option><option>Plain Handloom</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Occasion</label>
+            <select class="form-select" id="f_occasion">
+              <option value="">Select occasion</option>
+              <option>Casual</option><option>Wedding</option><option>Festival</option>
+              <option>Formal</option><option>Daily Wear</option><option>Gifting</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Size</label>
+            <select class="form-select" id="f_size">
+              <option value="">Select size</option>
+              <option>XS</option><option>S</option><option>M</option>
+              <option>L</option><option>XL</option><option>XXL</option><option>Free Size</option>
+            </select>
+          </div>
+
+          <!-- Product Details -->
+          <div class="form-section">Product Details</div>
+          <div class="form-group">
+            <label class="form-label">Material Used</label>
+            <input class="form-input" id="f_material" placeholder="e.g. Pure Murshidabad Silk, Zari border" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Time Taken to Weave</label>
+            <input class="form-input" id="f_timeTaken" placeholder="e.g. 72 hours" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Originating From</label>
+            <input class="form-input" id="f_origin" placeholder="e.g. Murshidabad, West Bengal" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Likes Count</label>
+            <input class="form-input" type="number" id="f_likes" placeholder="0" min="0" />
+          </div>
+
+          <!-- Flags -->
+          <div class="form-section">Status Flags</div>
+          <div class="form-group">
+            <label class="form-label">New Arrival</label>
+            <div class="form-toggle">
+              <label class="toggle">
+                <input type="checkbox" id="f_isNew" />
+                <div class="toggle-track"></div>
+                <div class="toggle-thumb"></div>
+              </label>
+              <span class="toggle-label">Mark as New Entry</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Best Seller</label>
+            <div class="form-toggle">
+              <label class="toggle">
+                <input type="checkbox" id="f_isBestSeller" />
+                <div class="toggle-track"></div>
+                <div class="toggle-thumb"></div>
+              </label>
+              <span class="toggle-label">Mark as Best Seller</span>
+            </div>
+          </div>
+
+          <!-- Reviews -->
+          <div class="form-section">Customer Reviews</div>
+          <div class="form-group full">
+            <div class="reviews-list" id="reviewsList"></div>
+            <button type="button" class="btn-add-review" onclick="addReviewRow()" style="margin-top:0.6rem;align-self:flex-start;">+ Add Review</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeProductModal()">Cancel</button>
+      <button class="btn-primary-admin" onclick="saveProduct()">💾 Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm delete modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="confirm-box">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title">Delete Product?</div>
+    <div class="confirm-msg" id="confirmMsg">This action cannot be undone.</div>
+    <div class="confirm-btns">
+      <button class="btn-cancel" onclick="document.getElementById('confirmModal').classList.remove('open')">Cancel</button>
+      <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // ⚠️ REPLACE with your Firebase config
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  // Expose to window for UI functions
+  window.__auth = auth;
+  window.__db   = db;
+  window.__firebase = { signInWithEmailAndPassword, signOut, onAuthStateChanged,
+    collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, serverTimestamp };
+
+  // Auth state
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      document.getElementById('authScreen').style.display = 'none';
+      document.getElementById('adminApp').classList.add('visible');
+      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('topbarUser').textContent = user.email.split('@')[0];
+      window.loadProducts();
+    } else {
+      document.getElementById('authScreen').style.display = 'flex';
+      document.getElementById('adminApp').classList.remove('visible');
+    }
+  });
+</script>
+
+<script>
+// ═══════════════════════════════════════════════ STATE
+let products = [];
+let editingId = null;
+let currentFilter = '';
+let searchQ = '';
+const PAGE_SIZE = 15;
+let currentPage = 1;
+
+// ═══════════════════════════════════════════════ AUTH
+window.doLogin = async function() {
+  const email = document.getElementById('authEmail').value.trim();
+  const pass  = document.getElementById('authPass').value;
+  const errEl = document.getElementById('authError');
+  errEl.style.display = 'none';
+  try {
+    const { signInWithEmailAndPassword } = window.__firebase;
+    await signInWithEmailAndPassword(window.__auth, email, pass);
+  } catch(e) {
+    errEl.style.display = 'block';
+  }
+};
+
+window.doLogout = async function() {
+  const { signOut } = window.__firebase;
+  await signOut(window.__auth);
+};
+
+// ═══════════════════════════════════════════════ LOAD PRODUCTS
+window.loadProducts = async function() {
+  renderContent('products');
+  const tableBody = document.getElementById('tableBody');
+  if (tableBody) tableBody.innerHTML = `<tr class="loading-row"><td colspan="10"><span class="spinner"></span>Loading products...</td></tr>`;
+
+  try {
+    const { collection, getDocs, query, orderBy } = window.__firebase;
+    const q = query(collection(window.__db, 'products'), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch(e) {
+    products = [];
+  }
+  renderTable();
+  updateStats();
+};
+
+// ═══════════════════════════════════════════════ SECTIONS
+window.showSection = function(section) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  if (section === 'products') {
+    document.getElementById('topbarTitle').textContent = 'Product Catalogue';
+    currentFilter = '';
+  } else if (section === 'new') {
+    document.getElementById('topbarTitle').textContent = 'New Arrivals';
+    currentFilter = 'new';
+  } else if (section === 'bestsellers') {
+    document.getElementById('topbarTitle').textContent = 'Best Sellers';
+    currentFilter = 'bestseller';
+  } else if (section === 'analytics') {
+    document.getElementById('topbarTitle').textContent = 'Analytics Overview';
+    renderAnalytics();
+    return;
+  }
+  renderContent('products');
+  renderTable();
+};
+
+// ═══════════════════════════════════════════════ RENDER CONTENT
+function renderContent(section) {
+  document.getElementById('mainContent').innerHTML = `
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card gold">
+        <div class="stat-card-label">Total Products</div>
+        <div class="stat-card-num" id="statTotal">—</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-card-label">New Arrivals</div>
+        <div class="stat-card-num" id="statNew">—</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-card-label">Best Sellers</div>
+        <div class="stat-card-num" id="statBest">—</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-card-label">Total Likes</div>
+        <div class="stat-card-num" id="statLikes">—</div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="page-header">
+      <div>
+        <div class="page-title" id="sectionTitle">All Products</div>
+        <div class="page-sub">Manage your handwoven catalogue</div>
+      </div>
+      <button class="btn-add" onclick="openProductModal()">+ Add Product</button>
+    </div>
+    <div class="toolbar">
+      <input class="tb-search" placeholder="Search by name, code, fabric..." oninput="adminSearch(this.value)" />
+      <select class="tb-filter" onchange="adminCategoryFilter(this.value)">
+        <option value="">All Categories</option>
+        <option>Saree</option><option>Punjabi</option><option>Kantha</option>
+        <option>Dupatta</option><option>Kurta</option><option>Shawl</option>
+      </select>
+      <select class="tb-filter" onchange="adminFabricFilter(this.value)">
+        <option value="">All Fabrics</option>
+        <option>Cotton</option><option>Silk</option><option>Muslin</option>
+        <option>Linen</option><option>Khadi</option><option>Zari</option><option>Organza</option>
+      </select>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Photo</th>
+            <th>S.No.</th>
+            <th>Sale Code</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Fabric</th>
+            <th>Flags</th>
+            <th>Likes</th>
+            <th>Reviews</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr class="loading-row"><td colspan="10"><span class="spinner"></span>Loading...</td></tr>
+        </tbody>
+      </table>
+      <div class="pagination" id="pagination"></div>
+    </div>`;
+
+  updateStats();
+}
+
+function updateStats() {
+  const t = products.length;
+  const n = products.filter(p => p.isNew).length;
+  const b = products.filter(p => p.isBestSeller).length;
+  const l = products.reduce((a, p) => a + (p.likes||0), 0);
+  document.getElementById('statTotal') && (document.getElementById('statTotal').textContent = t);
+  document.getElementById('statNew') && (document.getElementById('statNew').textContent = n);
+  document.getElementById('statBest') && (document.getElementById('statBest').textContent = b);
+  document.getElementById('statLikes') && (document.getElementById('statLikes').textContent = l.toLocaleString());
+}
+
+// ═══════════════════════════════════════════════ FILTER + TABLE
+let catFilter = '', fabFilter = '';
+
+window.adminSearch = function(v) { searchQ = v.toLowerCase(); currentPage = 1; renderTable(); };
+window.adminCategoryFilter = function(v) { catFilter = v; currentPage = 1; renderTable(); };
+window.adminFabricFilter = function(v) { fabFilter = v; currentPage = 1; renderTable(); };
+
+function getFiltered() {
+  return products.filter(p => {
+    if (currentFilter === 'new' && !p.isNew) return false;
+    if (currentFilter === 'bestseller' && !p.isBestSeller) return false;
+    if (catFilter && p.category !== catFilter) return false;
+    if (fabFilter && p.fabric !== fabFilter) return false;
+    if (searchQ) {
+      const h = `${p.name} ${p.nameBn} ${p.saleCode} ${p.fabric} ${p.description}`.toLowerCase();
+      if (!h.includes(searchQ)) return false;
+    }
+    return true;
+  });
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  if (!tbody) return;
+  const filtered = getFiltered();
+  const start = (currentPage-1)*PAGE_SIZE;
+  const page = filtered.slice(start, start+PAGE_SIZE);
+
+  if (!page.length) {
+    tbody.innerHTML = `<tr class="loading-row"><td colspan="10">No products found.</td></tr>`;
+    renderPagination(0);
+    return;
+  }
+
+  tbody.innerHTML = page.map(p => {
+    const thumb = p.driveLink
+      ? (() => { const m = p.driveLink.match(/\/d\/([a-zA-Z0-9_-]+)/); return m ? `<img src="https://drive.google.com/thumbnail?id=${m[1]}&sz=w80" onerror="this.parentNode.innerHTML='🥻'" />` : '🥻'; })()
+      : '🥻';
+    return `<tr>
+      <td><div class="td-thumb">${thumb}</div></td>
+      <td><span class="td-sn">${p.serialNumber || 'N/A'}</span></td>
+      <td><span class="td-code">${p.saleCode}</span></td>
+      <td>
+        <div class="td-name">${p.name}</div>
+        <div class="td-name-bn">${p.nameBn||''}</div>
+      </td>
+      <td>${p.category||'—'}</td>
+      <td>${p.fabric||'—'}</td>
+      <td>
+        <span class="badge-sm ${p.isNew ? 'badge-new' : 'badge-no'}">${p.isNew ? 'New':'—'}</span>
+        <span class="badge-sm ${p.isBestSeller ? 'badge-best' : 'badge-no'}" style="margin-left:4px;">${p.isBestSeller ? '★ Best':'—'}</span>
+      </td>
+      <td><span class="likes-num">♥ ${p.likes||0}</span></td>
+      <td>${(p.reviews||[]).length}</td>
+      <td><div class="actions">
+        <button class="btn-icon view" title="Preview on site" onclick="window.open('../client/index.html#collection','_blank')">↗</button>
+        <button class="btn-icon edit" title="Edit" onclick="editProduct('${p.id}')">✏️</button>
+        <button class="btn-icon delete" title="Delete" onclick="confirmDelete('${p.id}','${p.name}')">🗑️</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+
+  renderPagination(filtered.length);
+}
+
+function renderPagination(total) {
+  const pg = document.getElementById('pagination');
+  if (!pg) return;
+  const pages = Math.ceil(total / PAGE_SIZE);
+  const start = (currentPage-1)*PAGE_SIZE+1;
+  const end = Math.min(currentPage*PAGE_SIZE, total);
+  pg.innerHTML = `
+    <span>${total > 0 ? `${start}–${end} of ${total}` : '0 results'}</span>
+    <div class="pg-btns">
+      ${currentPage > 1 ? `<button class="pg-btn" onclick="goPage(${currentPage-1})">‹</button>` : ''}
+      ${Array.from({length: pages}, (_,i) => `<button class="pg-btn ${i+1===currentPage?'active':''}" onclick="goPage(${i+1})">${i+1}</button>`).join('')}
+      ${currentPage < pages ? `<button class="pg-btn" onclick="goPage(${currentPage+1})">›</button>` : ''}
+    </div>`;
+}
+
+window.goPage = function(p) { currentPage = p; renderTable(); };
+
+// ═══════════════════════════════════════════════ PRODUCT MODAL
+window.openProductModal = function(product) {
+  editingId = null;
+  document.getElementById('modalTitle').textContent = 'Add New Product';
+  clearForm();
+  document.getElementById('productModal').classList.add('open');
+};
+
+window.editProduct = function(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  editingId = id;
+  document.getElementById('modalTitle').textContent = 'Edit Product';
+
+  document.getElementById('f_name').value        = p.name || '';
+  document.getElementById('f_nameBn').value      = p.nameBn || '';
+  document.getElementById('f_saleCode').value    = p.saleCode || '';
+  document.getElementById('f_driveLink').value   = p.driveLink || '';
+  document.getElementById('f_description').value = p.description || '';
+  document.getElementById('f_category').value    = p.category || '';
+  document.getElementById('f_fabric').value      = p.fabric || '';
+  document.getElementById('f_colour').value      = p.colour || '';
+  document.getElementById('f_karigari').value    = p.karigari || '';
+  document.getElementById('f_occasion').value    = p.occasion || '';
+  document.getElementById('f_size').value        = p.size || '';
+  document.getElementById('f_material').value    = p.material || '';
+  document.getElementById('f_timeTaken').value   = p.timeTaken || '';
+  document.getElementById('f_origin').value      = p.origin || '';
+  document.getElementById('f_likes').value       = p.likes || 0;
+  document.getElementById('f_isNew').checked        = !!p.isNew;
+  document.getElementById('f_isBestSeller').checked = !!p.isBestSeller;
+
+  // Reviews
+  const rl = document.getElementById('reviewsList');
+  rl.innerHTML = '';
+  (p.reviews||[]).forEach(r => addReviewRow(r.text, r.author));
+
+  document.getElementById('productModal').classList.add('open');
+};
+
+window.closeProductModal = function() {
+  document.getElementById('productModal').classList.remove('open');
+};
+
+function clearForm() {
+  ['f_name','f_nameBn','f_saleCode','f_driveLink','f_description','f_category',
+   'f_fabric','f_colour','f_karigari','f_occasion','f_size','f_material','f_timeTaken','f_origin']
+    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  const fl = document.getElementById('f_likes');
+  if(fl) fl.value = '0';
+  document.getElementById('f_isNew').checked = false;
+  document.getElementById('f_isBestSeller').checked = false;
+  document.getElementById('reviewsList').innerHTML = '';
+}
+
+// Reviews
+window.addReviewRow = function(text='', author='') {
+  const rl = document.getElementById('reviewsList');
+  const row = document.createElement('div');
+  row.className = 'review-row';
+  row.innerHTML = `
+    <input placeholder="Review text..." value="${escHtml(text)}" />
+    <input placeholder="Author name" value="${escHtml(author)}" />
+    <button type="button" class="btn-rem-review" onclick="this.parentNode.remove()">✕</button>`;
+  rl.appendChild(row);
+};
+
+function escHtml(s) { return (s||'').replace(/"/g,'&quot;'); }
+
+// ═══════════════════════════════════════════════ SAVE PRODUCT
+window.saveProduct = async function() {
+  const name = document.getElementById('f_name').value.trim();
+  const saleCode = document.getElementById('f_saleCode').value.trim();
+  const category = document.getElementById('f_category').value;
+  const fabric = document.getElementById('f_fabric').value;
+  const description = document.getElementById('f_description').value.trim();
+
+  if (!name || !saleCode || !category || !fabric || !description) {
+    showToast('Please fill in all required fields.', 'error'); return;
+  }
+
+  // Collect reviews
+  const reviews = [];
+  document.querySelectorAll('#reviewsList .review-row').forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    const text = inputs[0]?.value.trim();
+    const author = inputs[1]?.value.trim();
+    if (text) reviews.push({ text, author: author || 'Anonymous' });
+  });
+
+  const { addDoc, updateDoc, doc, collection, serverTimestamp } = window.__firebase;
+
+  // Auto serial number
+  const existingNums = products.map(p => parseInt((p.serialNumber||'BN-000').replace('BN-',''))).filter(n => !isNaN(n));
+  const nextNum = existingNums.length > 0 ? Math.max(...existingNums) + 1 : 1;
+  const serialNumber = editingId
+    ? (products.find(p => p.id === editingId)?.serialNumber || `BN-${String(nextNum).padStart(3,'0')}`)
+    : `BN-${String(nextNum).padStart(3,'0')}`;
+
+  const data = {
+    name, nameBn: document.getElementById('f_nameBn').value.trim(),
+    saleCode, driveLink: document.getElementById('f_driveLink').value.trim(),
+    description, category, fabric,
+    colour: document.getElementById('f_colour').value,
+    karigari: document.getElementById('f_karigari').value,
+    occasion: document.getElementById('f_occasion').value,
+    size: document.getElementById('f_size').value,
+    material: document.getElementById('f_material').value.trim(),
+    timeTaken: document.getElementById('f_timeTaken').value.trim(),
+    origin: document.getElementById('f_origin').value.trim(),
+    likes: parseInt(document.getElementById('f_likes').value) || 0,
+    isNew: document.getElementById('f_isNew').checked,
+    isBestSeller: document.getElementById('f_isBestSeller').checked,
+    reviews, serialNumber
+  };
+
+  try {
+    if (editingId) {
+      await updateDoc(doc(window.__db, 'products', editingId), { ...data, updatedAt: serverTimestamp() });
+      showToast('Product updated successfully!', 'success');
+    } else {
+      data.createdAt = serverTimestamp();
+      await addDoc(collection(window.__db, 'products'), data);
+      showToast('Product added successfully!', 'success');
+    }
+    closeProductModal();
+    await loadProducts();
+  } catch(e) {
+    showToast('Error saving product: ' + e.message, 'error');
+  }
+};
+
+// ═══════════════════════════════════════════════ DELETE
+window.confirmDelete = function(id, name) {
+  document.getElementById('confirmMsg').textContent = `Delete "${name}"? This cannot be undone.`;
+  document.getElementById('confirmModal').classList.add('open');
+  document.getElementById('confirmDeleteBtn').onclick = () => deleteProduct(id);
+};
+
+async function deleteProduct(id) {
+  try {
+    const { doc, deleteDoc } = window.__firebase;
+    await deleteDoc(doc(window.__db, 'products', id));
+    document.getElementById('confirmModal').classList.remove('open');
+    showToast('Product deleted.', 'info');
+    await loadProducts();
+  } catch(e) {
+    showToast('Error deleting: ' + e.message, 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════ ANALYTICS
+function renderAnalytics() {
+  const topLiked = [...products].sort((a,b)=>(b.likes||0)-(a.likes||0)).slice(0,5);
+  const cats = {};
+  products.forEach(p => { cats[p.category||'Other'] = (cats[p.category||'Other']||0)+1; });
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="page-header">
+      <div><div class="page-title">Analytics Overview</div><div class="page-sub">Catalogue performance snapshot</div></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card gold"><div class="stat-card-label">Total Products</div><div class="stat-card-num">${products.length}</div></div>
+      <div class="stat-card blue"><div class="stat-card-label">New Arrivals</div><div class="stat-card-num">${products.filter(p=>p.isNew).length}</div></div>
+      <div class="stat-card green"><div class="stat-card-label">Best Sellers</div><div class="stat-card-num">${products.filter(p=>p.isBestSeller).length}</div></div>
+      <div class="stat-card orange"><div class="stat-card-label">Total Likes</div><div class="stat-card-num">${products.reduce((a,p)=>a+(p.likes||0),0).toLocaleString()}</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+      <div class="table-wrap">
+        <div style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);font-weight:600;font-size:0.9rem;">🏆 Top Liked Products</div>
+        <table><tbody>
+          ${topLiked.map((p,i) => `<tr>
+            <td style="width:32px;color:var(--gold);font-weight:700;">${i+1}</td>
+            <td><div class="td-name">${p.name}</div><div class="td-name-bn">${p.nameBn||''}</div></td>
+            <td><span class="td-code">${p.saleCode}</span></td>
+            <td><span class="likes-num">♥ ${p.likes||0}</span></td>
+          </tr>`).join('')}
+        </tbody></table>
+      </div>
+      <div class="table-wrap">
+        <div style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);font-weight:600;font-size:0.9rem;">📦 Products by Category</div>
+        <table><tbody>
+          ${Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,count]) => `<tr>
+            <td style="font-weight:500;">${cat}</td>
+            <td><div style="background:var(--surface2);border-radius:2px;height:8px;width:100%;overflow:hidden;">
+              <div style="background:var(--gold);height:100%;width:${Math.round(count/products.length*100)}%;border-radius:2px;"></div>
+            </div></td>
+            <td style="white-space:nowrap;color:var(--gold);font-weight:500;">${count}</td>
+          </tr>`).join('')}
+        </tbody></table>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════ TOAST
+function showToast(msg, type='info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// Init
+renderContent('products');
+</script>
+</body>
+</html>
