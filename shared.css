@@ -52,7 +52,7 @@ body::before {
 #authScreen {
   position: fixed; inset: 0; z-index: 9999;
   background: var(--bg-warm);
-  display: flex; align-items: center; justify-content: center;
+  display: none; align-items: center; justify-content: center;
   padding: 1rem;
   background-image:
     repeating-linear-gradient(-45deg, rgba(139,105,20,0.025) 0px, rgba(139,105,20,0.025) 1px, transparent 1px, transparent 14px),
