@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>বুনন — Testimonials</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Bengali:wght@300;400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="authScreen">
+  <div class="auth-box">
+    <div class="auth-brand"><span class="auth-logo">বুনন</span><span class="auth-tagline">Admin Panel</span><div class="auth-divider"></div></div>
+    <div class="auth-heading">Sign in to continue</div>
+    <div class="auth-field"><label>Email Address</label><input type="email" id="authEmail" placeholder="admin@bunan.in" onkeydown="if(event.key==='Enter')document.getElementById('authPass').focus()" /></div>
+    <div class="auth-field"><label>Password</label><input type="password" id="authPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" /></div>
+    <button class="auth-btn" onclick="doLogin()">Sign In</button>
+    <div class="auth-error" id="authError">Incorrect email or password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="adminApp">
+  <div class="sidebar-backdrop" onclick="closeSidebar()"></div>
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="sidebar-logo-bn">বুনন</div><div class="sidebar-logo-tag">Admin Panel</div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Catalogue</div>
+      <a class="nav-item" href="products.html"><svg class="nav-icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>All Products</a>
+      <a class="nav-item" href="products.html?filter=new"><svg class="nav-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>New Arrivals</a>
+      <a class="nav-item" href="products.html?filter=best"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Best Sellers</a>
+      <div class="nav-section">People</div>
+      <a class="nav-item" href="weavers.html"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Weavers</a>
+      <a class="nav-item active" href="testimonials.html"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Testimonials</a>
+      <div class="nav-section">Insights</div>
+      <a class="nav-item" href="index.html"><svg class="nav-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics</a>
+      <div class="nav-section">System</div>
+      <a class="nav-item" href="settings.html"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</a>
+    </nav>
+    <div class="sidebar-footer"><div class="sidebar-user-email" id="userEmail"></div><button class="logout-btn" onclick="doLogout()">Sign Out</button></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <button class="hamburger" onclick="toggleSidebar()"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <div class="topbar-title">Testimonials</div>
+      <div class="topbar-right">
+        <div class="user-badge"><div class="user-dot"></div><span id="topbarUser">Admin</span></div>
+        <a href="https://bunan-client.vercel.app/" target="_blank" class="view-site-link">View Site &nearr;</a>
+      </div>
+    </div>
+    <div class="content" id="mainContent"><div class="empty-state"><div class="spinner"></div> Loading…</div></div>
+  </main>
+</div>
+
+<!-- CONFIRM -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="confirm-box">
+    <div class="confirm-icon-wrap"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+    <div class="confirm-title">Delete this item?</div>
+    <div class="confirm-msg" id="confirmMsg">This action is permanent and cannot be undone.</div>
+    <div class="confirm-btns"><button class="btn-cancel" onclick="document.getElementById('confirmModal').classList.remove('open')">Cancel</button><button class="btn-danger" id="confirmDeleteBtn">Delete</button></div>
+  </div>
+</div>
+
+<!-- PREVIEW PANEL -->
+<div class="preview-overlay" id="previewOverlay" onclick="if(event.target===this)closePreview()">
+  <div class="preview-panel">
+    <div class="preview-panel-header"><div class="preview-panel-title" id="previewTitle">Preview</div><button class="modal-close" onclick="closePreview()">&#215;</button></div>
+    <div class="preview-panel-body" id="previewBody"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  const firebaseConfig={apiKey:"AIzaSyDwV9cghlNFbzv57hkdIcFFzy1rXbIcIS4",authDomain:"bunan-4fd57.firebaseapp.com",projectId:"bunan-4fd57",storageBucket:"bunan-4fd57.firebasestorage.app",messagingSenderId:"612151786648",appId:"1:612151786648:web:6ca884a59cbd73117724ed"};
+  const app=initializeApp(firebaseConfig);const auth=getAuth(app);const db=getFirestore(app);
+  window.__auth=auth;window.__db=db;
+  window.__firebase={signInWithEmailAndPassword,signOut,onAuthStateChanged,collection,getDocs,addDoc,updateDoc,deleteDoc,doc,query,orderBy,serverTimestamp};
+  onAuthStateChanged(auth,user=>{
+    if(user){document.getElementById('authScreen').style.display='none';document.getElementById('adminApp').classList.add('visible');document.getElementById('userEmail').textContent=user.email;document.getElementById('topbarUser').textContent=user.email.split('@')[0];window.initApp();}
+    else{document.getElementById('authScreen').style.display='flex';document.getElementById('adminApp').classList.remove('visible');}
+  });
+</script>
+<script src="shared.js"></script>
+<script>
+let editingTestimonialId = null;
+
+window.initApp = async function() {
+  await loadProducts(); await loadWeavers(); await loadTestimonials();
+  renderTestimonialsPage();
+};
+
+function renderTestimonialsPage() {
+  const avgRating = testimonials.length
+    ? (testimonials.reduce((a, t) => a + (t.stars || 5), 0) / testimonials.length).toFixed(1)
+    : '—';
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="stats-row">
+      <div class="stat-card gold"><div class="stat-card-label">Total Reviews</div><div class="stat-card-num">${testimonials.length}</div></div>
+      <div class="stat-card green"><div class="stat-card-label">5-Star Reviews</div><div class="stat-card-num">${testimonials.filter(t => t.stars === 5 || !t.stars).length}</div></div>
+      <div class="stat-card blue"><div class="stat-card-label">Featured</div><div class="stat-card-num">${testimonials.filter(t => t.isFeatured).length}</div></div>
+      <div class="stat-card amber"><div class="stat-card-label">Avg. Rating</div><div class="stat-card-num">${avgRating}</div></div>
+    </div>
+    <div class="page-header">
+      <div><div class="page-title">Testimonials</div><div class="page-sub">Customer reviews and stories</div></div>
+      <button class="btn-add" onclick="openTestimonialModal()">+ Add Testimonial</button>
+    </div>
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table>
+          <thead><tr>
+            <th style="width:44px;"></th>
+            <th>Customer</th>
+            <th>Review</th>
+            <th>Stars</th>
+            <th>Product</th>
+            <th>Status</th>
+            <th style="width:100px;">Actions</th>
+          </tr></thead>
+          <tbody id="testimonialTableBody"></tbody>
+        </table>
+      </div>
+    </div>`;
+  renderTestimonialTable();
+}
+
+function renderTestimonialTable() {
+  const tb = document.getElementById('testimonialTableBody');
+  if (!testimonials.length) {
+    tb.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-state-title">No testimonials yet</div><p>Add a customer review to get started.</p></div></td></tr>`;
+    return;
+  }
+  tb.innerHTML = testimonials.map(t => {
+    const initials = (t.name || 'AN').split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    const stars = '★'.repeat(t.stars || 5) + '☆'.repeat(5 - (t.stars || 5));
+    const excerpt = (t.review || '').length > 80 ? t.review.slice(0, 80) + '…' : (t.review || '—');
+    return `<tr>
+      <td><div class="weaver-avatar" style="background:var(--gold-pale);color:var(--gold-dim);font-size:0.75rem;">${escHtml(initials)}</div></td>
+      <td>
+        <div style="font-weight:500;font-size:0.85rem;">${escHtml(t.name || '—')}</div>
+        ${t.designation ? `<div style="font-size:0.75rem;color:var(--text-light);">${escHtml(t.designation)}</div>` : ''}
+        ${t.location ? `<div style="font-size:0.75rem;color:var(--text-light);">${escHtml(t.location)}</div>` : ''}
+      </td>
+      <td style="max-width:260px;font-size:0.82rem;color:var(--text-dim);font-style:italic;">"${escHtml(excerpt)}"</td>
+      <td style="color:var(--gold);letter-spacing:1px;font-size:0.9rem;">${stars}</td>
+      <td>${t.productSaleCode ? `<span class="td-code">${escHtml(t.productSaleCode)}</span>` : '<span style="color:var(--text-light);font-size:0.78rem;">—</span>'}</td>
+      <td>
+        ${t.isFeatured ? `<span class="badge-feat">Featured</span>` : ''}
+        ${t.isVerified ? `<span class="badge-lim" style="margin-left:0.2rem;">Verified</span>` : ''}
+        ${!t.isFeatured && !t.isVerified ? '<span style="color:var(--text-light);font-size:0.78rem;">—</span>' : ''}
+      </td>
+      <td>
+        <button class="btn-icon view" title="Preview" onclick='showPreviewPanel("testimonial",${JSON.stringify(t)})'><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        <button class="btn-icon edit" title="Edit" onclick="openTestimonialModal('${t.id}')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="btn-icon del" title="Delete" onclick="confirmDelete('${t.id}','${escHtml(t.name || '')}','testimonials')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+window.openTestimonialModal = function(id) {
+  editingTestimonialId = id || null;
+  const t = id ? testimonials.find(x => x.id === id) : null;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay open';
+  overlay.id = 'testimonialModalOverlay';
+
+  overlay.innerHTML = `
+    <div class="modal" style="max-width:680px;">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">${t ? 'Edit Testimonial' : 'Add Testimonial'}</div>
+          <div class="modal-title-sub">Customer review — shown on the testimonials section</div>
+        </div>
+        <button class="modal-close" onclick="closeTestimonialModal()">&#215;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-section-block">
+          <div class="form-section-header">
+            <div class="form-section-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div><div class="form-section-title">Customer Details</div></div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Full Name <span class="req">*</span></label><input class="form-input" id="tf_name" value="${escHtml(t?.name || '')}" placeholder="e.g. Pratima Ganguly" /></div>
+            <div class="form-group"><label class="form-label">Designation / Role</label><input class="form-input" id="tf_designation" value="${escHtml(t?.designation || '')}" placeholder="e.g. Homemaker, Teacher, Architect" /></div>
+            <div class="form-group"><label class="form-label">City / Location</label><input class="form-input" id="tf_location" value="${escHtml(t?.location || '')}" placeholder="e.g. Salt Lake, Kolkata" /></div>
+            <div class="form-group"><label class="form-label">Customer Photo Link</label><input class="form-input" id="tf_photoLink" value="${escHtml(t?.photoLink || '')}" placeholder="Google Drive link to portrait photo" /></div>
+          </div>
+        </div>
+        <div class="form-section-block">
+          <div class="form-section-header">
+            <div class="form-section-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div><div class="form-section-title">Review Content</div></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Star Rating</label>
+            <div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;" id="starRatingRow">
+              ${[1, 2, 3, 4, 5].map(n => `<button type="button" onclick="setStarRating(${n})" id="star_${n}" style="font-size:1.4rem;background:none;border:none;cursor:pointer;color:${(t?.stars || 5) >= n ? 'var(--gold)' : 'var(--surface3)'};">&#9733;</button>`).join('')}
+            </div>
+            <input type="hidden" id="tf_stars" value="${t?.stars || 5}" />
+          </div>
+          <div class="form-group"><label class="form-label">Review Text <span class="req">*</span></label><textarea class="form-textarea" id="tf_review" style="min-height:120px;" placeholder="The customer's words — as personal and specific as possible.">${escHtml(t?.review || '')}</textarea></div>
+          <div class="form-group"><label class="form-label">Occasion / Context</label><input class="form-input" id="tf_occasion" value="${escHtml(t?.occasion || '')}" placeholder="e.g. Bought as a wedding gift, For Durga Puja" /></div>
+        </div>
+        <div class="form-section-block">
+          <div class="form-section-header">
+            <div class="form-section-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+            <div><div class="form-section-title">Product Reference</div></div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Product Sale Code</label>
+              <select class="form-select" id="tf_productSaleCode">
+                <option value="">None / Unknown</option>
+                ${products.map(p => `<option value="${escHtml(p.saleCode)}" ${t?.productSaleCode === p.saleCode ? 'selected' : ''}>${escHtml(p.saleCode)} — ${escHtml(p.name)}</option>`).join('')}
+              </select>
+              <span class="form-hint">Links the review to a specific product in the catalogue.</span>
+            </div>
+            <div class="form-group"><label class="form-label">Order Reference</label><input class="form-input" id="tf_orderRef" value="${escHtml(t?.orderRef || '')}" placeholder="e.g. ORD-2024-0042 (optional)" /></div>
+          </div>
+        </div>
+        <div class="form-section-block">
+          <div class="form-section-header">
+            <div class="form-section-icon"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>
+            <div><div class="form-section-title">Display Settings</div></div>
+          </div>
+          <div class="toggle-grid" style="grid-template-columns:1fr 1fr;">
+            <label class="toggle-card"><div class="toggle-card-info"><div class="toggle-card-label">Featured</div><div class="toggle-card-desc">Show in featured quotes section</div></div><label class="toggle"><input type="checkbox" id="tf_isFeatured" ${t?.isFeatured ? 'checked' : ''} /><div class="toggle-track"></div><div class="toggle-thumb"></div></label></label>
+            <label class="toggle-card"><div class="toggle-card-info"><div class="toggle-card-label">Verified Purchase</div><div class="toggle-card-desc">Show verified badge</div></div><label class="toggle"><input type="checkbox" id="tf_isVerified" ${t?.isVerified ? 'checked' : ''} /><div class="toggle-track"></div><div class="toggle-thumb"></div></label></label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeTestimonialModal()">Cancel</button>
+        <button class="btn-preview" onclick="previewTestimonialFromModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Preview
+        </button>
+        <button class="btn-primary-admin" onclick="saveTestimonial()">Save Testimonial</button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(overlay);
+};
+
+window.setStarRating = function(n) {
+  document.getElementById('tf_stars').value = n;
+  for (let i = 1; i <= 5; i++) {
+    const star = document.getElementById('star_' + i);
+    if (star) star.style.color = i <= n ? 'var(--gold)' : 'var(--surface3)';
+  }
+};
+
+window.previewTestimonialFromModal = function() {
+  const data = {
+    name:            document.getElementById('tf_name')?.value.trim() || 'Anonymous',
+    designation:     document.getElementById('tf_designation')?.value.trim(),
+    location:        document.getElementById('tf_location')?.value.trim(),
+    review:          document.getElementById('tf_review')?.value.trim(),
+    stars:           parseInt(document.getElementById('tf_stars')?.value) || 5,
+    productSaleCode: document.getElementById('tf_productSaleCode')?.value,
+    occasion:        document.getElementById('tf_occasion')?.value.trim()
+  };
+  showPreviewPanel('testimonial', data);
+};
+
+window.closeTestimonialModal = function() {
+  const el = document.getElementById('testimonialModalOverlay');
+  if (el) el.remove();
+  editingTestimonialId = null;
+};
+
+window.saveTestimonial = async function() {
+  const name   = document.getElementById('tf_name')?.value.trim();
+  const review = document.getElementById('tf_review')?.value.trim();
+  if (!name || !review) { showToast('Name and review are required.', 'error'); return; }
+  const { addDoc, updateDoc, doc, collection, serverTimestamp } = window.__firebase;
+  const data = {
+    name, review,
+    designation:     document.getElementById('tf_designation')?.value.trim() || '',
+    location:        document.getElementById('tf_location')?.value.trim() || '',
+    photoLink:       document.getElementById('tf_photoLink')?.value.trim() || '',
+    stars:           parseInt(document.getElementById('tf_stars')?.value) || 5,
+    productSaleCode: document.getElementById('tf_productSaleCode')?.value || '',
+    orderRef:        document.getElementById('tf_orderRef')?.value.trim() || '',
+    occasion:        document.getElementById('tf_occasion')?.value.trim() || '',
+    isFeatured:      document.getElementById('tf_isFeatured')?.checked || false,
+    isVerified:      document.getElementById('tf_isVerified')?.checked || false,
+  };
+  try {
+    if (editingTestimonialId) {
+      await updateDoc(doc(window.__db, 'testimonials', editingTestimonialId), { ...data, updatedAt: serverTimestamp() });
+      showToast('Testimonial updated.', 'success');
+    } else {
+      data.createdAt = serverTimestamp();
+      await addDoc(collection(window.__db, 'testimonials'), data);
+      showToast('Testimonial added.', 'success');
+    }
+    closeTestimonialModal();
+    await loadTestimonials();
+    renderTestimonialsPage();
+  } catch(e) { showToast('Error saving testimonial: ' + e.message, 'error'); }
+};
+
+window.renderTestimonialsPage = renderTestimonialsPage;
+</script>
+</body>
+</html>

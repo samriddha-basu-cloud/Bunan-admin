@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>বুনন — Products</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Bengali:wght@300;400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="authScreen">
+  <div class="auth-box">
+    <div class="auth-brand">
+      <span class="auth-logo">বুনন</span>
+      <span class="auth-tagline">Admin Panel</span>
+      <div class="auth-divider"></div>
+    </div>
+    <div class="auth-heading">Sign in to continue</div>
+    <div class="auth-field"><label>Email Address</label><input type="email" id="authEmail" placeholder="admin@bunan.in" onkeydown="if(event.key==='Enter')document.getElementById('authPass').focus()" /></div>
+    <div class="auth-field"><label>Password</label><input type="password" id="authPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" /></div>
+    <button class="auth-btn" onclick="doLogin()">Sign In</button>
+    <div class="auth-error" id="authError">Incorrect email or password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="adminApp">
+  <div class="sidebar-backdrop" onclick="closeSidebar()"></div>
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="sidebar-logo-bn">বুনন</div><div class="sidebar-logo-tag">Admin Panel</div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Catalogue</div>
+      <a class="nav-item active" href="products.html"><svg class="nav-icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>All Products</a>
+      <a class="nav-item" href="products.html?filter=new"><svg class="nav-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>New Arrivals</a>
+      <a class="nav-item" href="products.html?filter=best"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Best Sellers</a>
+      <div class="nav-section">People</div>
+      <a class="nav-item" href="weavers.html"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Weavers</a>
+      <a class="nav-item" href="testimonials.html"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Testimonials</a>
+      <div class="nav-section">Insights</div>
+      <a class="nav-item" href="index.html"><svg class="nav-icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics</a>
+      <div class="nav-section">System</div>
+      <a class="nav-item" href="settings.html"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user-email" id="userEmail"></div>
+      <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <button class="hamburger" onclick="toggleSidebar()"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <div class="topbar-title" id="topbarTitle">Products</div>
+      <div class="topbar-right">
+        <div class="user-badge"><div class="user-dot"></div><span id="topbarUser">Admin</span></div>
+        <a href="https://bunan-client.vercel.app/" target="_blank" class="view-site-link">View Site &nearr;</a>
+      </div>
+    </div>
+    <div class="content" id="mainContent"><div class="empty-state"><div class="spinner"></div> Loading…</div></div>
+  </main>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div><div class="modal-title" id="productModalTitle">Add New Product</div><div class="modal-title-sub">Fill in the details below to list a new piece</div></div>
+      <button class="modal-close" onclick="closeProductModal()">&#215;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section-block">
+        <div class="form-section-header"><div class="form-section-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="form-section-title">Basic Information</div><div class="form-section-desc">Name, code, and product description</div></div></div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Product Name (English) <span class="req">*</span></label><input class="form-input" id="f_name" placeholder="e.g. Jamdani Silk Saree" /></div>
+          <div class="form-group"><label class="form-label">Product Name (Bengali)</label><input class="form-input" id="f_nameBn" placeholder="e.g. জামদানি রেশম শাড়ি" style="font-family:var(--font-bengali);" /></div>
+          <div class="form-group"><label class="form-label">Sale Code <span class="req">*</span></label><input class="form-input" id="f_saleCode" placeholder="e.g. SAR-JMD-007" /><span class="form-hint">Format: CATEGORY-CRAFT-NUMBER — must be unique</span></div>
+          <div class="form-group"><label class="form-label">Tagline</label><input class="form-input" id="f_tagline" placeholder="e.g. 72 hours of devotion, woven into light." /><span class="form-hint">One line — the soul of this piece.</span></div>
+          <div class="form-group full"><label class="form-label">Product Description <span class="req">*</span></label><textarea class="form-textarea" id="f_description" placeholder="Tell the story of this piece — its craft, its origin, and what makes it extraordinary."></textarea></div>
+          <div class="form-group full">
+            <label class="form-label">Product Photos <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.68rem;">— Google Drive share links (up to 8)</span></label>
+            <div class="photo-rows" id="photoRows"></div>
+            <button type="button" class="btn-add-photo" onclick="addPhotoRow()">+ Add Photo Link</button>
+            <span class="form-hint" style="margin-top:0.4rem;">Share link: https://drive.google.com/file/d/FILE_ID/view — set to "Anyone with the link"</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-section-block">
+        <div class="form-section-header"><div class="form-section-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg></div><div><div class="form-section-title">Classification</div><div class="form-section-desc">Category, fabric, and filtering attributes</div></div></div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Category <span class="req">*</span></label><select class="form-select" id="f_category"><option value="">Select a category</option><option>Saree</option><option>Punjabi</option><option>Kantha</option><option>Dupatta</option><option>Kurta</option><option>Shawl</option></select></div>
+          <div class="form-group"><label class="form-label">Fabric <span class="req">*</span></label><select class="form-select" id="f_fabric"><option value="">Select fabric type</option><option>Cotton</option><option>Silk</option><option>Muslin</option><option>Linen</option><option>Khadi</option><option>Zari</option><option>Georgette</option><option>Organza</option></select></div>
+          <div class="form-group"><label class="form-label">Colour</label><select class="form-select" id="f_colour"><option value="">Select dominant colour</option><option>Red</option><option>Blue</option><option>Green</option><option>White</option><option>Black</option><option>Yellow</option><option>Orange</option><option>Purple</option><option>Beige</option><option>Multicolour</option></select></div>
+          <div class="form-group"><label class="form-label">Karigari (Craft)</label><select class="form-select" id="f_karigari"><option value="">Select technique</option><option>Jamdani</option><option>Kantha Stitch</option><option>Block Print</option><option>Batik</option><option>Embroidery</option><option>Zari Work</option><option>Nakshi</option><option>Plain Handloom</option></select></div>
+          <div class="form-group"><label class="form-label">Occasion</label><select class="form-select" id="f_occasion"><option value="">Select occasion type</option><option>Casual</option><option>Wedding</option><option>Festival</option><option>Formal</option><option>Daily Wear</option><option>Gifting</option></select></div>
+          <div class="form-group"><label class="form-label">Size</label><select class="form-select" id="f_size"><option value="">Select size</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>Free Size</option></select></div>
+        </div>
+      </div>
+      <div class="form-section-block">
+        <div class="form-section-header"><div class="form-section-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><div class="form-section-title">Product Details</div><div class="form-section-desc">Material, provenance, and physical specifications</div></div></div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Material Composition</label><input class="form-input" id="f_material" placeholder="e.g. Pure Murshidabad Silk, Zari border" /></div>
+          <div class="form-group"><label class="form-label">Time Taken to Weave</label><input class="form-input" id="f_timeTaken" placeholder="e.g. 72 hours" /></div>
+          <div class="form-group"><label class="form-label">Place of Origin</label><input class="form-input" id="f_origin" placeholder="e.g. Murshidabad, West Bengal" /></div>
+          <div class="form-group"><label class="form-label">Likes Count</label><input class="form-input" type="number" id="f_likes" placeholder="0" min="0" /></div>
+          <div class="form-group"><label class="form-label">Length / Dimensions</label><input class="form-input" id="f_dimensions" placeholder="e.g. 6.3m x 1.15m" /></div>
+          <div class="form-group"><label class="form-label">Weight</label><input class="form-input" id="f_weight" placeholder="e.g. 450g" /></div>
+        </div>
+      </div>
+      <div class="form-section-block">
+        <div class="form-section-header"><div class="form-section-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div><div class="form-section-title">Weaver's Story</div><div class="form-section-desc">The human behind the craft — shown to customers</div></div></div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Weaver's Name</label><input class="form-input" id="f_weaverName" placeholder="e.g. Sumaitra Hansda" /></div>
+          <div class="form-group"><label class="form-label">Weaver's Village</label><input class="form-input" id="f_weaverVillage" placeholder="e.g. Bolpur, Birbhum" /></div>
+          <div class="form-group full"><label class="form-label">Weaver's Story</label><textarea class="form-textarea" id="f_weaverStory" placeholder="Who is this person? How long have they been weaving? What does this craft mean to them?"></textarea></div>
+        </div>
+      </div>
+      <div class="form-section-block">
+        <div class="form-section-header"><div class="form-section-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="form-section-title">Care Instructions</div><div class="form-section-desc">Washing and maintenance guidance</div></div></div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Wash Type</label><select class="form-select" id="f_washType"><option value="">Select wash method</option><option>Dry Clean Only</option><option>Hand Wash Cold</option><option>Hand Wash Warm</option><option>Machine Wash Gentle</option><option>Spot Clean</option></select></div>
+          <div class="form-group"><label class="form-label">Additional Care Notes</label><input class="form-input" id="f_careInstructions" placeholder="e.g. Do not wring. Dry in shade." /></div>
+        </div>
+      </div>
+      <div class="form-section-block">
+        <div class="form-section-header"><div class="form-section-icon"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div><div><div class="form-section-title">Search Tags</div><div class="form-section-desc">Keywords to help customers discover this piece</div></div></div>
+        <div class="form-group">
+          <div class="tags-wrap" id="tagsWrap" onclick="document.getElementById('tagsInput').focus()">
+            <input class="tags-input" id="tagsInput" placeholder='Type keyword then press Enter or comma...' onkeydown="handleTagInput(event)" />
+          </div>
+          <span class="form-hint">e.g. "handwoven", "wedding gift", "silk saree", "Durga Puja"</span>
+        </div>
+      </div>
+      <div class="form-section-block">
+        <div class="form-section-header"><div class="form-section-icon"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div><div><div class="form-section-title">Status Flags</div><div class="form-section-desc">Controls visibility badges on the product listing</div></div></div>
+        <div class="toggle-grid">
+          <label class="toggle-card"><div class="toggle-card-info"><div class="toggle-card-label">New Arrival</div><div class="toggle-card-desc">Shows "New" badge on the product card</div></div><label class="toggle"><input type="checkbox" id="f_isNew" /><div class="toggle-track"></div><div class="toggle-thumb"></div></label></label>
+          <label class="toggle-card"><div class="toggle-card-info"><div class="toggle-card-label">Best Seller</div><div class="toggle-card-desc">Shows gold badge; appears in Best Sellers view</div></div><label class="toggle"><input type="checkbox" id="f_isBestSeller" /><div class="toggle-track"></div><div class="toggle-thumb"></div></label></label>
+          <label class="toggle-card"><div class="toggle-card-info"><div class="toggle-card-label">Limited Edition</div><div class="toggle-card-desc">Adds limited edition indicator to the listing</div></div><label class="toggle"><input type="checkbox" id="f_isLimited" /><div class="toggle-track"></div><div class="toggle-thumb"></div></label></label>
+          <label class="toggle-card"><div class="toggle-card-info"><div class="toggle-card-label">Featured</div><div class="toggle-card-desc">Pins this piece to the top of the collection</div></div><label class="toggle"><input type="checkbox" id="f_isFeatured" /><div class="toggle-track"></div><div class="toggle-thumb"></div></label></label>
+        </div>
+      </div>
+      <div class="form-section-block">
+        <div class="form-section-header"><div class="form-section-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><div class="form-section-title">Customer Reviews</div><div class="form-section-desc">Shown on the product detail page</div></div></div>
+        <div class="reviews-list" id="reviewsList"></div>
+        <button type="button" class="btn-add-review" onclick="addReviewRow()" style="margin-top:0.5rem;">+ Add Review</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeProductModal()">Cancel</button>
+      <button class="btn-preview" onclick="previewProduct()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Preview</button>
+      <button class="btn-primary-admin" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="confirm-box">
+    <div class="confirm-icon-wrap"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+    <div class="confirm-title">Delete this item?</div>
+    <div class="confirm-msg" id="confirmMsg">This action is permanent and cannot be undone.</div>
+    <div class="confirm-btns">
+      <button class="btn-cancel" onclick="document.getElementById('confirmModal').classList.remove('open')">Cancel</button>
+      <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- PREVIEW PANEL -->
+<div class="preview-overlay" id="previewOverlay" onclick="if(event.target===this)closePreview()">
+  <div class="preview-panel">
+    <div class="preview-panel-header"><div class="preview-panel-title" id="previewTitle">Preview</div><button class="modal-close" onclick="closePreview()">&#215;</button></div>
+    <div class="preview-panel-body" id="previewBody"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  const firebaseConfig = { apiKey:"AIzaSyDwV9cghlNFbzv57hkdIcFFzy1rXbIcIS4",authDomain:"bunan-4fd57.firebaseapp.com",projectId:"bunan-4fd57",storageBucket:"bunan-4fd57.firebasestorage.app",messagingSenderId:"612151786648",appId:"1:612151786648:web:6ca884a59cbd73117724ed" };
+  const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
+  window.__auth=auth; window.__db=db;
+  window.__firebase={signInWithEmailAndPassword,signOut,onAuthStateChanged,collection,getDocs,addDoc,updateDoc,deleteDoc,doc,query,orderBy,serverTimestamp};
+  onAuthStateChanged(auth,user=>{
+    if(user){
+      document.getElementById('authScreen').style.display='none';
+      document.getElementById('adminApp').classList.add('visible');
+      document.getElementById('userEmail').textContent=user.email;
+      document.getElementById('topbarUser').textContent=user.email.split('@')[0];
+      window.initApp();
+    } else {
+      document.getElementById('authScreen').style.display='flex';
+      document.getElementById('adminApp').classList.remove('visible');
+    }
+  });
+</script>
+<script src="shared.js"></script>
+<script>
+// Product page state
+let editingId = null;
+let productFilter = '';
+let searchQ = '';
+let catFilter = '';
+let fabFilter = '';
+const PAGE_SIZE = 15;
+let currentPageNum = 1;
+
+window.initApp = async function() {
+  // Read URL param for filter
+  const params = new URLSearchParams(location.search);
+  const f = params.get('filter');
+  if (f === 'new') { productFilter = 'new'; document.getElementById('topbarTitle').textContent = 'New Arrivals'; }
+  else if (f === 'best') { productFilter = 'bestseller'; document.getElementById('topbarTitle').textContent = 'Best Sellers'; }
+  else { productFilter = ''; document.getElementById('topbarTitle').textContent = 'All Products'; }
+
+  // Update active nav based on filter
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  if (f === 'new') document.querySelectorAll('.nav-item')[1]?.classList.add('active');
+  else if (f === 'best') document.querySelectorAll('.nav-item')[2]?.classList.add('active');
+  else document.querySelectorAll('.nav-item')[0]?.classList.add('active');
+
+  await loadProducts(); await loadWeavers(); await loadTestimonials();
+  renderProductsPage();
+};
+
+function renderProductsPage() {
+  const titles = {'':['All Products','Manage your handwoven catalogue'],'new':['New Arrivals','Recently added pieces'],'bestseller':['Best Sellers','Most loved by customers']};
+  const [ptitle, psub] = titles[productFilter] || titles[''];
+  document.getElementById('mainContent').innerHTML = `
+    <div class="stats-row">
+      <div class="stat-card gold"><div class="stat-card-label">Total Products</div><div class="stat-card-num">${products.length}</div></div>
+      <div class="stat-card blue"><div class="stat-card-label">New Arrivals</div><div class="stat-card-num">${products.filter(p=>p.isNew).length}</div></div>
+      <div class="stat-card green"><div class="stat-card-label">Best Sellers</div><div class="stat-card-num">${products.filter(p=>p.isBestSeller).length}</div></div>
+      <div class="stat-card amber"><div class="stat-card-label">Total Likes</div><div class="stat-card-num">${products.reduce((a,p)=>a+(p.likes||0),0).toLocaleString()}</div></div>
+    </div>
+    <div class="page-header">
+      <div><div class="page-title">${ptitle}</div><div class="page-sub">${psub}</div></div>
+      <button class="btn-add" onclick="openProductModal()">+ Add Product</button>
+    </div>
+    <div class="toolbar">
+      <input class="tb-search" placeholder="Search by name, code, fabric..." oninput="productSearch(this.value)" value="${escHtml(searchQ)}" />
+      <select class="tb-filter" onchange="catFilter=this.value;currentPageNum=1;renderProductTable()">
+        <option value="">All Categories</option>
+        <option ${catFilter==='Saree'?'selected':''}>Saree</option><option ${catFilter==='Punjabi'?'selected':''}>Punjabi</option>
+        <option ${catFilter==='Kantha'?'selected':''}>Kantha</option><option ${catFilter==='Dupatta'?'selected':''}>Dupatta</option>
+        <option ${catFilter==='Kurta'?'selected':''}>Kurta</option><option ${catFilter==='Shawl'?'selected':''}>Shawl</option>
+      </select>
+      <select class="tb-filter" onchange="fabFilter=this.value;currentPageNum=1;renderProductTable()">
+        <option value="">All Fabrics</option>
+        <option ${fabFilter==='Cotton'?'selected':''}>Cotton</option><option ${fabFilter==='Silk'?'selected':''}>Silk</option>
+        <option ${fabFilter==='Khadi'?'selected':''}>Khadi</option><option ${fabFilter==='Muslin'?'selected':''}>Muslin</option>
+        <option ${fabFilter==='Organza'?'selected':''}>Organza</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th style="width:50px;"></th><th>Product</th><th>Code</th><th>Category</th><th>Fabric</th><th>Status</th><th style="width:60px;">Likes</th><th style="width:100px;">Actions</th></tr></thead>
+          <tbody id="productTableBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="productPagination"></div>
+    </div>`;
+  renderProductTable();
+}
+
+window.renderProductsPage = renderProductsPage;
+
+function renderProductTable() {
+  let filtered = [...products];
+  if (productFilter === 'new')        filtered = filtered.filter(p => p.isNew);
+  if (productFilter === 'bestseller') filtered = filtered.filter(p => p.isBestSeller);
+  if (searchQ) { const q=searchQ.toLowerCase(); filtered=filtered.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.saleCode||'').toLowerCase().includes(q)||(p.fabric||'').toLowerCase().includes(q)||(p.description||'').toLowerCase().includes(q)); }
+  if (catFilter) filtered = filtered.filter(p => p.category === catFilter);
+  if (fabFilter) filtered = filtered.filter(p => p.fabric === fabFilter);
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if (currentPageNum > totalPages) currentPageNum = 1;
+  const slice = filtered.slice((currentPageNum - 1) * PAGE_SIZE, currentPageNum * PAGE_SIZE);
+  const tb = document.getElementById('productTableBody');
+  if (!tb) return;
+  if (!slice.length) {
+    tb.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-state-title">No products found</div><p>Try adjusting your search or filters.</p></div></td></tr>`;
+  } else {
+    tb.innerHTML = slice.map(p => {
+      const thumbUrl = driveThumb(p.driveLink);
+      const badges=[p.isNew?'<span class="badge-sm badge-new">New</span>':'',p.isBestSeller?'<span class="badge-sm badge-best">Best Seller</span>':'',p.isFeatured?'<span class="badge-sm badge-feat">Featured</span>':'',p.isLimited?'<span class="badge-sm badge-lim">Limited</span>':''].filter(Boolean).join(' ');
+      return `<tr>
+        <td><div class="td-thumb">${thumbUrl?`<img src="${thumbUrl}" onload="this.style.opacity=1" style="opacity:0;transition:opacity 0.3s">`:`<svg class="td-thumb-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`}</div></td>
+        <td><div class="td-name">${escHtml(p.name)}</div>${p.nameBn?`<div class="td-name-bn">${escHtml(p.nameBn)}</div>`:''}</td>
+        <td><span class="td-code">${escHtml(p.saleCode||'')}</span></td>
+        <td style="font-size:0.82rem;color:var(--text-dim);">${escHtml(p.category||'—')}</td>
+        <td style="font-size:0.82rem;color:var(--text-dim);">${escHtml(p.fabric||'—')}</td>
+        <td>${badges||'<span style="color:var(--text-faint);font-size:0.78rem;">—</span>'}</td>
+        <td style="color:var(--danger);font-weight:600;font-size:0.82rem;">${p.likes||0}</td>
+        <td><div class="actions">
+          <button class="btn-icon view" title="Preview" onclick="previewProductById('${p.id}')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          <button class="btn-icon edit" title="Edit" onclick="openProductModal('${p.id}')"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="btn-icon del" title="Delete" onclick="confirmDelete('${p.id}','${escHtml(p.name)}','products')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+        </div></td>
+      </tr>`;
+    }).join('');
+  }
+  const pg = document.getElementById('productPagination');
+  if (pg) {
+    let btns='';
+    for(let i=1;i<=totalPages;i++) btns+=`<button class="pg-btn${i===currentPageNum?' active':''}" onclick="currentPageNum=${i};renderProductTable()">${i}</button>`;
+    pg.innerHTML=`<span>${(currentPageNum-1)*PAGE_SIZE+1}–${Math.min(currentPageNum*PAGE_SIZE,total)} of ${total}</span><div class="pg-btns"><button class="pg-btn" onclick="if(currentPageNum>1){currentPageNum--;renderProductTable()}">&lsaquo;</button>${btns}<button class="pg-btn" onclick="if(currentPageNum<${totalPages}){currentPageNum++;renderProductTable()}">&rsaquo;</button></div>`;
+  }
+}
+
+window.productSearch = function(val) { searchQ=val; currentPageNum=1; renderProductTable(); };
+
+window.openProductModal = function(id) {
+  editingId = id || null;
+  const p = id ? products.find(x=>x.id===id) : null;
+  document.getElementById('productModalTitle').textContent = p ? 'Edit Product' : 'Add New Product';
+  const fields=['name','nameBn','saleCode','tagline','description','weaverName','weaverVillage','weaverStory','material','timeTaken','origin','dimensions','weight','careInstructions'];
+  fields.forEach(f=>{const el=document.getElementById('f_'+f);if(el)el.value=p?(p[f]||''):''});
+  const el=document.getElementById('f_likes');if(el)el.value=p?(p.likes||0):0;
+  ['category','fabric','colour','karigari','occasion','size','washType'].forEach(f=>{const el=document.getElementById('f_'+f);if(el)el.value=p?(p[f]||''):''});
+  ['isNew','isBestSeller','isLimited','isFeatured'].forEach(f=>{const el=document.getElementById('f_'+f);if(el)el.checked=p?!!p[f]:false});
+  const pr=document.getElementById('photoRows');pr.innerHTML='';
+  (p?.driveLinks||(p?.driveLink?[p.driveLink]:[])).forEach(url=>addPhotoRow(url));
+  const tw=document.getElementById('tagsWrap');tw.querySelectorAll('.tag-pill').forEach(el=>el.remove());
+  (p?.tags||[]).forEach(t=>addTagPill(t));
+  const rl=document.getElementById('reviewsList');rl.innerHTML='';
+  (p?.reviews||[]).forEach(r=>addReviewRow(r.text,r.author));
+  document.getElementById('productModal').classList.add('open');
+};
+
+window.closeProductModal = function() {
+  document.getElementById('productModal').classList.remove('open');
+  editingId = null;
+};
+
+window.addPhotoRow = function(url='') {
+  const pr=document.getElementById('photoRows');
+  const row=document.createElement('div');row.className='photo-row';
+  const thumbId='ph_'+Date.now()+Math.random();
+  const thumb=driveThumb(url);
+  row.innerHTML=`${thumb?`<img id="${thumbId}" class="photo-thumb loaded" src="${thumb}" />`:`<img id="${thumbId}" class="photo-thumb" />`}<input class="form-input photo-row-input" placeholder="Google Drive share link..." value="${escHtml(url)}" oninput="updatePhotoThumb(this,'${thumbId}')" /><button type="button" class="btn-rem-photo" onclick="this.parentNode.remove()">&#215;</button>`;
+  pr.appendChild(row);
+};
+
+window.addReviewRow = function(text='', author='') {
+  const rl=document.getElementById('reviewsList');
+  const row=document.createElement('div');row.className='review-row';
+  row.innerHTML=`<input placeholder="What the customer said..." value="${escHtml(text)}" /><input placeholder="Customer name or initials" value="${escHtml(author)}" style="flex:1.5" /><button type="button" class="btn-rem-review" onclick="this.parentNode.remove()">Remove</button>`;
+  rl.appendChild(row);
+};
+
+function addTagPill(tag) {
+  const tw=document.getElementById('tagsWrap');const inp=document.getElementById('tagsInput');
+  const pill=document.createElement('span');pill.className='tag-pill';pill.dataset.tag=tag;
+  pill.innerHTML=`${escHtml(tag)}<button type="button" onclick="this.parentNode.remove()">&#215;</button>`;
+  tw.insertBefore(pill,inp);
+}
+
+window.handleTagInput = function(e) {
+  if(e.key==='Enter'||e.key===','){e.preventDefault();const inp=e.target;const val=inp.value.replace(/,/g,'').trim();if(val){addTagPill(val);inp.value='';}}
+  else if(e.key==='Backspace'&&!e.target.value){const pills=document.querySelectorAll('#tagsWrap .tag-pill');if(pills.length)pills[pills.length-1].remove();}
+};
+
+window.saveProduct = async function() {
+  const name=document.getElementById('f_name').value.trim();const saleCode=document.getElementById('f_saleCode').value.trim();
+  const category=document.getElementById('f_category').value;const fabric=document.getElementById('f_fabric').value;
+  const desc=document.getElementById('f_description').value.trim();
+  if(!name||!saleCode||!category||!fabric||!desc){showToast('Please fill in all required fields.','error');return;}
+  const reviews=[];
+  document.querySelectorAll('#reviewsList .review-row').forEach(row=>{const inputs=row.querySelectorAll('input');const text=inputs[0]?.value.trim();const author=inputs[1]?.value.trim();if(text)reviews.push({text,author:author||'Anonymous'});});
+  const existingNums=products.map(p=>parseInt((p.serialNumber||'BN-000').replace('BN-',''))).filter(n=>!isNaN(n));
+  const nextNum=existingNums.length>0?Math.max(...existingNums)+1:1;
+  const serialNumber=editingId?(products.find(p=>p.id===editingId)?.serialNumber||`BN-${String(nextNum).padStart(3,'0')}`): `BN-${String(nextNum).padStart(3,'0')}`;
+  const driveLinks=[];document.querySelectorAll('#photoRows .photo-row-input').forEach(inp=>{const v=inp.value.trim();if(v)driveLinks.push(v);});
+  const driveLink=driveLinks[0]||'';
+  const tags=[...document.querySelectorAll('#tagsWrap .tag-pill')].map(pill=>pill.dataset.tag);
+  const {addDoc,updateDoc,doc,collection,serverTimestamp}=window.__firebase;
+  const data={name,saleCode,category,fabric,reviews,driveLink,driveLinks,tags,serialNumber,
+    nameBn:document.getElementById('f_nameBn').value.trim(),tagline:document.getElementById('f_tagline').value.trim(),
+    description:desc,colour:document.getElementById('f_colour').value,karigari:document.getElementById('f_karigari').value,
+    occasion:document.getElementById('f_occasion').value,size:document.getElementById('f_size').value,
+    material:document.getElementById('f_material').value.trim(),timeTaken:document.getElementById('f_timeTaken').value.trim(),
+    origin:document.getElementById('f_origin').value.trim(),dimensions:document.getElementById('f_dimensions').value.trim(),
+    weight:document.getElementById('f_weight').value.trim(),likes:parseInt(document.getElementById('f_likes').value)||0,
+    isNew:document.getElementById('f_isNew').checked,isBestSeller:document.getElementById('f_isBestSeller').checked,
+    isLimited:document.getElementById('f_isLimited').checked,isFeatured:document.getElementById('f_isFeatured').checked,
+    weaverName:document.getElementById('f_weaverName').value.trim(),weaverVillage:document.getElementById('f_weaverVillage').value.trim(),
+    weaverStory:document.getElementById('f_weaverStory').value.trim(),washType:document.getElementById('f_washType').value,
+    careInstructions:document.getElementById('f_careInstructions').value.trim()};
+  try {
+    if(editingId){await updateDoc(doc(window.__db,'products',editingId),{...data,updatedAt:serverTimestamp()});showToast('Product updated successfully.','success');}
+    else{data.createdAt=serverTimestamp();await addDoc(collection(window.__db,'products'),data);showToast('Product added to catalogue.','success');}
+    closeProductModal();await loadProducts();renderProductsPage();
+  } catch(e){showToast('Error saving product: '+e.message,'error');}
+};
+
+window.previewProduct = function() {
+  const name=document.getElementById('f_name').value.trim()||'Untitled Product';
+  const links=[];document.querySelectorAll('#photoRows .photo-row-input').forEach(i=>{if(i.value.trim())links.push(i.value.trim());});
+  showPreviewPanel('product',{name,id:editingId,nameBn:document.getElementById('f_nameBn').value.trim(),saleCode:document.getElementById('f_saleCode').value.trim(),tagline:document.getElementById('f_tagline').value.trim(),description:document.getElementById('f_description').value.trim(),category:document.getElementById('f_category').value,fabric:document.getElementById('f_fabric').value,karigari:document.getElementById('f_karigari').value,origin:document.getElementById('f_origin').value.trim(),weaverName:document.getElementById('f_weaverName').value.trim(),weaverVillage:document.getElementById('f_weaverVillage').value.trim(),driveLinks:links});
+};
+
+window.previewProductById = function(id) {
+  const p=products.find(x=>x.id===id);if(p)showPreviewPanel('product',p);
+};
+</script>
+</body>
+</html>
